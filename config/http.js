@@ -9,6 +9,9 @@
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.http.html
  */
 
+var cls = require('continuation-local-storage');
+var store = cls.createNamespace('transaction');
+
 module.exports.http = {
 
   /****************************************************************************
@@ -30,23 +33,25 @@ module.exports.http = {
   *                                                                          *
   ***************************************************************************/
 
-    // order: [
-    //   'startRequestTimer',
-    //   'cookieParser',
-    //   'session',
-    //   'myRequestLogger',
-    //   'bodyParser',
-    //   'handleBodyParserError',
-    //   'compress',
-    //   'methodOverride',
-    //   'poweredBy',
-    //   '$custom',
-    //   'router',
-    //   'www',
-    //   'favicon',
-    //   '404',
-    //   '500'
-    // ],
+    order: [
+      'startRequestTimer',
+      'cookieParser',
+      'session',
+      // start 
+      'startTransaction',
+      // 
+      'bodyParser',
+      'handleBodyParserError',
+      'compress',
+      'methodOverride',
+      'poweredBy',
+      '$custom',
+      'router',
+      'www',
+      'favicon',
+      '404',
+      '500'
+    ],
 
   /****************************************************************************
   *                                                                           *
@@ -58,6 +63,24 @@ module.exports.http = {
     //     console.log("Requested :: ", req.method, req.url);
     //     return next();
     // }
+
+
+    startTransaction: function (req, res, next) {
+        
+      store.bindEmitter(req);
+      store.bindEmitter(res);
+
+      store.run(function() {
+        
+          store.set('id', req.sessionID);
+          
+          console.log(req.sessionID, 'set id');
+          
+          store.run(function(){
+                next();
+          });
+      });
+    }
 
 
   /***************************************************************************
