@@ -1,5 +1,6 @@
 // Dependencies
 var mysql = require('mysql');
+var cls = require('continuation-local-storage');
 
 var STRINGFILE = {
   noCallbackError: 'An error occurred in the MySQL adapter, but no callback was specified to the spawnConnection function to handle it.'
@@ -21,6 +22,12 @@ var STRINGFILE = {
  */
 
 module.exports = function spawnConnection (connectionObject, fn, cb__spawnConnection) {
+
+//here get and replace of connection from store !!!!!!
+var store = cls.getNamespace('transaction');
+setTimeout(function() {
+    console.log(store.get('id'), 'get id from store with timeout'); 
+}, 5000);
 
   //
   // TODO:
