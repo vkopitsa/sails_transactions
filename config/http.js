@@ -11,6 +11,7 @@
 
 var cls = require('continuation-local-storage');
 var store = cls.createNamespace('transaction');
+var mysql = require('mysql');
 
 module.exports.http = {
 
@@ -70,12 +71,24 @@ module.exports.http = {
       store.bindEmitter(req);
       store.bindEmitter(res);
 
+      var config = {
+                adapter: 'transaction-mysql',
+                host: '127.0.0.1',
+                user: 'root',
+                password: '1',
+                database: 'test',
+                pool: true,
+                //connectionLimit: 2,
+                waitForConnections: true,
+                dateStrings: 'date'
+      };
+
+      var conn = mysql.createConnection(config);
+
       store.run(function() {
-        
-          store.set('id', req.sessionID);
-          
-          console.log(req.sessionID, 'set id');
-          
+      
+          store.set('conn', conn);
+                    
           store.run(function(){
                 next();
           });

@@ -16,6 +16,9 @@ module.exports = {
 		Test.find({}).exec(function (err, data) {
 			console.log(data);
 		});
+		Test.find({}).exec(function (err, data) {
+			console.log(data);
+		});
 
 		return res.view();
 	},

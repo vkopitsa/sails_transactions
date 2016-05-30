@@ -25,9 +25,24 @@ module.exports = function spawnConnection (connectionObject, fn, cb__spawnConnec
 
 //here get and replace of connection from store !!!!!!
 var store = cls.getNamespace('transaction');
-setTimeout(function() {
-    console.log(store.get('id'), 'get id from store with timeout'); 
-}, 5000);
+var conn;
+
+if(store.get('conn')){
+    conn = store.get('conn')
+    store.set('conn', conn);
+    console.log('new');
+}else{
+      conn = mysql.createConnection(connectionObject.config);
+}
+
+  conn.connect(function (err) {
+    afterwards(err, conn);
+  });
+  return;
+
+// setTimeout(function() {
+//     console.log(store.get('id'), 'get id from store with timeout'); 
+// }, 5000);
 
   //
   // TODO:
