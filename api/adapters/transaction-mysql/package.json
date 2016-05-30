@@ -18,11 +18,19 @@
   "author": "balderdashy",
   "license": "MIT",
   "readmeFilename": "README.md",
-  "dependencies": {},
+	"dependencies": {
+    "async": "1.5.2",
+    "lodash": "3.10.1",
+    "mysql": "2.10.2",
+    "waterline-cursor": "0.0.6",
+    "waterline-errors": "0.10.1",
+    "waterline-sequel": "0.6.2"
+  },
   "devDependencies": {
-    "waterline-adapter-tests": "~0.10.0",
-    "mocha": "*",
-    "captains-log": "~0.11.0"
+    "captains-log": "~0.11.11",
+    "mocha": "2.4.1",
+    "should": "8.2.0",
+    "waterline-adapter-tests": "~0.12.0"
   },
   "waterlineAdapter": {
     "type": "transaction-mysql",
